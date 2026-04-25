@@ -23,15 +23,16 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
+            'password_confirmation' => 'nullable|string|min:6', // For frontend validation
             'role'=> 'required|in:admin,student,teacher',
-            'gender' => 'required|in:male,female',
-            'dob' => 'sometimes|date',
-            'phone' => 'sometimes|string:max:10',
-            'status' => 'sometimes|integer',
+            'gender' => 'nullable|in:male,female',
+            'dob' => 'nullable|date',
+            'phone' => 'nullable|string|max:15',
+            'status' => 'nullable|integer',
         ];
     }
 }

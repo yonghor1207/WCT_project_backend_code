@@ -17,21 +17,32 @@ class AuthSV
     }
 
 
-    public function loginAdmin($identifier, $password)
+    public function loginAdmin($identifier, $password, $role = null)
     {
         $user = User::query()
-            // ->with('role')
             ->where(function ($query) use ($identifier) {
                 $query->where('email',$identifier);
             })
             ->first();
+            
         if (!$user) {
             throw new Exception('User not found');
         }
 
-        // if ($user->active == 0) {
-        //     throw new Exception('User is deactivated');
-        // }
+        // Check if role matches (if role is provided)
+        if ($role && $user->role !== $role) {
+            throw new Exception('Invalid credentials for selected role');
+        }
+
+        // Check if teacher account is pending approval (status = 0)
+        if ($user->role === 'teacher' && $user->status == 0) {
+            throw new Exception('Your account is pending admin approval');
+        }
+
+        // Check if user is deactivated
+        if ($user->status == 0 && $user->role !== 'teacher') {
+            throw new Exception('User is deactivated');
+        }
 
         if (!Hash::check($password, $user->password)) {
             throw new Exception('Email or Password is incorrect');
@@ -58,7 +69,8 @@ class AuthSV
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data['role']
+            'role' => $data['role'],
+            'status' => $data['status'] ?? 1, // 0 = pending, 1 = active
         ]);
     }
 

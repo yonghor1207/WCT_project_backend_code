@@ -97,6 +97,19 @@ class UserController extends BaseAPI
         }
     }
 
-
-
+    public function approveUser($id)
+    {
+        try {
+            DB::beginTransaction();
+            $user = $this->userService->approveUser($id);
+            if (!$user) {
+                return $this->errorResponse('User not found', 404);
+            }
+            DB::commit();
+            return $this->successResponse($user, 'User approved successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
 }

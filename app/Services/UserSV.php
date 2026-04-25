@@ -81,7 +81,18 @@ class UserSV extends BaseService
         }
     }
 
- 
+    public function approveUser($id)
+    {
+        try {
+            $user = $this->getQuery()->findOrFail($id);
+            
+            // Set status to active (1)
+            $this->getQuery()->where('id', $id)->update(['status' => 1]);
+            $user->refresh();
 
-
+            return $user;
+        } catch (\Exception $e) {
+            throw new \Exception('Error approving user: ' . $e->getMessage(), 500);
+        }
+    }
 }

@@ -12,15 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
+            // Unified Auth Routes (for all roles)
+            Route::prefix('api/auth')
+                ->middleware('api')
+                ->name('api.auth')
+                ->group(base_path('routes/auth.php'));
+
+            // Admin Routes (protected)
             Route::prefix('api/admin')
                 ->middleware('api')
                 ->name('api.admin')
                 ->group(base_path('routes/admin.php'));
-
-            Route::prefix('api/user')
-                ->middleware('api')
-                ->name('api.user')
-                ->group(base_path('routes/user.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
