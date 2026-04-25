@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\v1\Admin\ClassroomController;
 use App\Http\Controllers\Api\v1\Admin\CourseController;
 use App\Http\Controllers\Api\v1\Admin\PaymentController;
 use App\Http\Controllers\Api\v1\Admin\AttendanceController;
+use App\Http\Controllers\Api\v1\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*///////////////////////////////////////////
@@ -16,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 */ //////////////////////////////////////////
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
+    
+    // Dashboard Stats
+    Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+    Route::get('/dashboard/charts', [DashboardController::class, 'getChartData']);
     
     // User Management
     Route::post('/users', [UserController::class, 'store']);
