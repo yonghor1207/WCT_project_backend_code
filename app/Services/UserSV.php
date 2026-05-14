@@ -95,4 +95,33 @@ class UserSV extends BaseService
             throw new \Exception('Error approving user: ' . $e->getMessage(), 500);
         }
     }
+
+    public function deleteUser($id)
+    {
+        try {
+            $user = $this->getQuery()->findOrFail($id);
+            
+            // Delete the user
+            $user->delete();
+            
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception('Error deleting user: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function updatePaymentStatus($id, $paymentStatus)
+    {
+        try {
+            $user = $this->getQuery()->findOrFail($id);
+            
+            // Update payment status
+            $this->getQuery()->where('id', $id)->update(['payment_status' => $paymentStatus]);
+            $user->refresh();
+            
+            return $user;
+        } catch (\Exception $e) {
+            throw new \Exception('Error updating payment status: ' . $e->getMessage(), 500);
+        }
+    }
 }

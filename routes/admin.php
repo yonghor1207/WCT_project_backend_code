@@ -29,12 +29,15 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::put('/users/{id}', [UserController::class, 'updateUser']);
     Route::patch('/users/{id}/deactivate', [UserController::class, 'deactivateUser']);
     Route::patch('/users/{id}/approve', [UserController::class, 'approveUser']); // For teacher approval
+    Route::patch('/users/{id}/payment-status', [UserController::class, 'updatePaymentStatus']); // Update payment status
+    Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete user
 
     // Classroom Management
     Route::post('/classrooms', [ClassroomController::class, 'store']);
     Route::get('/classrooms', [ClassroomController::class, 'getAllClassrooms']);
     Route::get('/classrooms/{id}', [ClassroomController::class, 'getClassrooms']);
     Route::put('/classrooms/{id}', [ClassroomController::class, 'updateClassroom']);
+    Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']); // Delete classroom
 
     // Course Management
     Route::post('/courses', [CourseController::class, 'store']);
@@ -56,5 +59,6 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::get('/attendances/{id}', [AttendanceController::class, 'getAttendance']);
     Route::put('/attendances/{id}', [AttendanceController::class, 'updateAttendance']);
     Route::patch('/attendances/{id}/verify', [AttendanceController::class, 'verifyAttendance']);
+    Route::delete('/attendances/{id}', [AttendanceController::class, 'destroy']);
 });
 

@@ -112,4 +112,53 @@ class UserController extends BaseAPI
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Get the authenticated user
+            $authUser = auth()->user();
+            
+            // Prevent deleting yourself
+            if ($authUser && $authUser->id == $id) {
+                return $this->errorResponse('You cannot delete your own account', 403);
+            }
+            
+            $user = $this->userService->deleteUser($id);
+            
+            if (!$user) {
+                return $this->errorResponse('User not found', 404);
+            }
+            
+            DB::commit();
+            return $this->successResponse(null, 'User deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+    public function updatePaymentStatus(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'payment_status' => 'required|in:paid_1_semester,paid_2_semester,pending,not_yet'
+            ]);
+
+            DB::beginTransaction();
+            $user = $this->userService->updatePaymentStatus($id, $request->payment_status);
+            
+            if (!$user) {
+                return $this->errorResponse('User not found', 404);
+            }
+            
+            DB::commit();
+            return $this->successResponse($user, 'Payment status updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }

@@ -64,5 +64,22 @@ class ClassroomController extends BaseAPI
         }
     }
 
-
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            $classroom = $this->classroomSV->deleteClassroom($id);
+            
+            if (!$classroom) {
+                return $this->errorResponse('Classroom not found', 404);
+            }
+            
+            DB::commit();
+            return $this->successResponse(null, 'Classroom deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }

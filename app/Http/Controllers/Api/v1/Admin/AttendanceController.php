@@ -66,7 +66,13 @@ class AttendanceController extends BaseAPI
         }
     }
 
-
-
-
+    public function destroy($id)
+    {
+        try {
+            $this->attendanceService->deleteAttendance($id);
+            return $this->successResponse(null, 'Attendance deleted successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }

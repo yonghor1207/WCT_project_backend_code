@@ -56,7 +56,18 @@ class ClassroomSV extends BaseService
             throw new \Exception('Error updating classroom: ' . $e->getMessage(), 500);
         }
     }
- 
 
-
+    public function deleteClassroom($id)
+    {
+        try {
+            $classroom = $this->getQuery()->findOrFail($id);
+            
+            // Delete the classroom
+            $classroom->delete();
+            
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception('Error deleting classroom: ' . $e->getMessage(), 500);
+        }
+    }
 }

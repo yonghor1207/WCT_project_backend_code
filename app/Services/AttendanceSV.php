@@ -71,6 +71,17 @@ class AttendanceSV extends BaseService
         }   
     }
 
+    public function deleteAttendance($id)
+    {
+        try {
+            $attendance = $this->getQuery()->findOrFail($id);
+            $attendance->delete();
+            return true;
+        } catch (Exception $e) {
+            throw new Exception('Error deleting attendance: ' . $e->getMessage());
+        }
+    }
+
         public function verifyPayment($id)
     {
         try {
