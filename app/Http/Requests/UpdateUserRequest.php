@@ -31,7 +31,11 @@ class UpdateUserRequest extends FormRequest
             'dob' => 'date|nullable',
             'phone'          => 'nullable|string|max:20',
             'profile_image'  => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'gender'         => 'nullable|in:male,female'
+            'gender'         => 'nullable|in:male,female',
+            'department'     => 'nullable|string|max:255',
+            'class'          => 'nullable|string|max:255',
+            'year'           => 'nullable|string|max:255',
+            'payment_status' => 'nullable|in:paid_1_semester,paid_2_semester,pending,pending_semester_2,not_yet'
         ];
     }
 }

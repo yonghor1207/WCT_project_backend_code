@@ -58,6 +58,47 @@ class AuthSV
     }
 
     /**
+     * Login for students and teachers (using api-user guard)
+     */
+    public function login($credentials, $userData, $role)
+    {
+        $user = User::query()
+            ->where('email', $credentials['email'])
+            ->first();
+            
+        if (!$user) {
+            throw new Exception('User not found');
+        }
+
+        // Check if role matches
+        if ($user->role !== $role) {
+            throw new Exception('Invalid credentials for selected role');
+        }
+
+        // Check if teacher account is pending approval (status = 0)
+        if ($user->role === 'teacher' && $user->status == 0) {
+            throw new Exception('Your account is pending admin approval');
+        }
+
+        // Check if user is deactivated
+        if ($user->status == 0 && $user->role !== 'teacher') {
+            throw new Exception('User is deactivated');
+        }
+
+        if (!Hash::check($credentials['password'], $user->password)) {
+            throw new Exception('Email or Password is incorrect');
+        }
+
+        $token = Auth::guard('api-user')->login($user);
+        
+        if (!$token) {
+            throw new Exception('Unauthorized');
+        }
+        
+        return ['user' => $user, 'token' => $token];
+    }
+
+    /**
      * Register a User.
      */
     public function register($data)

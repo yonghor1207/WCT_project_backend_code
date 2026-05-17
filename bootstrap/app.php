@@ -18,6 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('api.auth')
                 ->group(base_path('routes/auth.php'));
 
+            // User Routes (for students and teachers)
+            Route::prefix('api/user')
+                ->middleware('api')
+                ->name('api.user')
+                ->group(base_path('routes/user.php'));
+
             // Admin Routes (protected)
             Route::prefix('api/admin')
                 ->middleware('api')

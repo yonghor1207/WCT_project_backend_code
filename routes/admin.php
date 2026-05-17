@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::get('/courses/{id}', [CourseController::class, 'getCourse']);
     Route::put('/courses/{id}', [CourseController::class, 'updateCourse']);
     Route::patch('/courses/{id}/deactivate', [CourseController::class, 'deactivateCourse']);
+    Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 
     // Payment Management
     Route::get('/payments', [PaymentController::class, 'getAllPayments']);

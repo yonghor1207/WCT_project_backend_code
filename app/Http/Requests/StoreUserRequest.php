@@ -33,6 +33,10 @@ class StoreUserRequest extends FormRequest
             'dob' => 'nullable|date',
             'phone' => 'nullable|string|max:15',
             'status' => 'nullable|integer',
+            'department' => 'nullable|string|max:255',
+            'class' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:255',
+            'payment_status' => 'nullable|in:paid_1_semester,paid_2_semester,pending,pending_semester_2,not_yet',
         ];
     }
 }

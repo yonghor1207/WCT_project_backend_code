@@ -75,4 +75,19 @@ class CourseController extends BaseAPI
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
+
+    public function destroy($id){
+        try {
+            DB::beginTransaction();
+            $course = $this->courseService->deleteCourse($id);
+            DB::commit();
+            if (!$course) {
+                return $this->errorResponse('Course not found', 404);
+            }
+            return $this->successResponse($course, 'Course deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
 }

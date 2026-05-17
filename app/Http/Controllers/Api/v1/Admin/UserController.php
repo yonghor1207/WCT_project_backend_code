@@ -144,7 +144,7 @@ class UserController extends BaseAPI
     {
         try {
             $request->validate([
-                'payment_status' => 'required|in:paid_1_semester,paid_2_semester,pending,not_yet'
+                'payment_status' => 'required|in:paid_1_semester,paid_2_semester,pending,pending_semester_2,not_yet'
             ]);
 
             DB::beginTransaction();

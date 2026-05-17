@@ -25,7 +25,7 @@ class UserAuthController extends BaseAPI
             $params['password'] = $request->password;
             $params['first_name'] = $request->first_name;
             $params['last_name'] = $request->last_name;
-            $params['role'] = 'user';
+            $params['role'] = $request->role ?? 'student'; // Use role from request or default to student
             $user = $this->AuthSV->register($request, $params['role']);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode());
@@ -40,7 +40,7 @@ class UserAuthController extends BaseAPI
         try {
             $credentials = $request->only('email', 'password');
             $userData = $request->only('email', 'name');
-            $role = 'user';
+            $role = $request->role ?? 'student'; // Use role from request or default to student
             $user = $this->AuthSV->login($credentials, $userData, $role);
             return $this->successResponse($user, 'User logged in successfully');
         } catch (\Exception $e) {

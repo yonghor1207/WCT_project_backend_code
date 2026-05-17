@@ -77,4 +77,15 @@ class CourseSV extends BaseService
             throw new \Exception('Error toggling course status: ' . $e->getMessage(), 500);
         }
     }
+
+    public function deleteCourse($id)
+    {
+        try {
+            $course = $this->getQuery()->findOrFail($id);
+            $course->delete();
+            return $course;
+        } catch (\Exception $e) {
+            throw new \Exception('Error deleting course: ' . $e->getMessage(), 500);
+        }
+    }
 }                   

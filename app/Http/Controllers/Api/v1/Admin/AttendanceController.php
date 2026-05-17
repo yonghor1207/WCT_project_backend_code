@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1\Admin;
 
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Http\Requests\VerifyAttendanceRequest;
 use App\Models\Attendance;
 use App\Services\AttendanceSV;
 use App\Http\Controllers\Api\v1\BaseAPI;
@@ -55,7 +56,7 @@ class AttendanceController extends BaseAPI
         }
     }
 
-    public function verifyAttendance(Request $request,$id)
+    public function verifyAttendance(VerifyAttendanceRequest $request,$id)
     {
         $status = $request->input('status');
         try {
